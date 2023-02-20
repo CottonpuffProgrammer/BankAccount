@@ -57,6 +57,16 @@ namespace BankAccount
         /// taken from the balance </param>
         public double Withdraw(double amount)
         {
+            if (amount > Balance)
+            {
+                throw new ArgumentException("Withdraw amount cannot be greater than current balance!");
+            }
+
+            if (amount <= 0)
+            {
+                throw new ArgumentOutOfRangeException("Withdraw amount must be a non-zero positive number!");
+            }
+
             Balance = Balance - amount;
             return Balance;
         }

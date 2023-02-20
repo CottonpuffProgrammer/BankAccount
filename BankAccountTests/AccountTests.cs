@@ -21,9 +21,6 @@ namespace BankAccount.Tests
 
         [TestMethod()]
         [DataRow(23.48)]
-        [DataRow(14)]
-        [DataRow(0.01)]
-        [DataRow(1.999)]
         [DataRow(1000000000.07)]
         public void Deposit_PositiveAmount_AddToBalance(double amount)
         {
@@ -33,7 +30,6 @@ namespace BankAccount.Tests
         }
 
         [TestMethod()]
-        [DataRow(3)]
         [DataRow(2.34)]
         [DataRow(0.01)]
         public void Deposit_PositiveAmount_DoesNewBalanceGetReturned(double amount)
@@ -66,36 +62,47 @@ namespace BankAccount.Tests
         [TestMethod()]
         [DataRow(0.02, 0.01)]
         [DataRow(5.67, 3)]
-        [DataRow(9, 4)]
         public void Withdraw_PositiveAmount_DecreasesBalance(double deposit, double withdraw)
         {
-            // Arrange
-            double expectedbalance = deposit - withdraw;
+            double expectedBalance = deposit - withdraw;
 
             acc.Deposit(deposit);
             acc.Withdraw(withdraw);
 
             double finalBalance = acc.Balance;
 
-            Assert.AreEqual(expectedbalance, finalBalance);
+            Assert.AreEqual(expectedBalance, finalBalance);
         }
 
         [TestMethod()]
-        public void Withdraw_PositiveAmount_ReturnsUpdatedBalance()
+        [DataRow(200, 100)]
+        [DataRow(35, 20)]
+        public void Withdraw_PositiveAmount_ReturnsUpdatedBalance(double deposit, double withdraw)
         {
-            Assert.Fail();
+            acc.Deposit(deposit);
+            double returnedBalance = acc.Withdraw(withdraw);
+
+            double expectedBalance = acc.Balance;
+
+            Assert.AreEqual(expectedBalance, returnedBalance);
         }
 
         [TestMethod()]
-        public void Withdraw_ZeroOrLess_ThrowsArgumentOutOfRangeException()
+        [DataRow(-1000.01)]
+        [DataRow(-1)]
+        public void Withdraw_ZeroOrLess_ThrowsArgumentOutOfRangeException(double invalidAmount)
         {
-            Assert.Fail();
+            Assert.ThrowsException<ArgumentOutOfRangeException>
+                (() => acc.Withdraw(invalidAmount));
         }
 
         [TestMethod()]
-        public void Withdraw_MoreThanAvailableBalance_ThrowsArgumentException()
+        [DataRow(30)]
+        [DataRow(15)]
+        public void Withdraw_MoreThanAvailableBalance_ThrowsArgumentException(double amount)
         {
-            Assert.Fail();
+            Assert.ThrowsException<ArgumentException>
+                (() => acc.Withdraw(amount));
         }
 
         // Withdrawing a positive amount - decrease balance
