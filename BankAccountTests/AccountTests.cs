@@ -19,7 +19,7 @@ namespace BankAccount.Tests
             acc = new Account("Steve");
         }
 
-        // All 7 method tests are listed below, each with
+        // All 8+ method tests are listed below, most with
         // 2 data rows for extra testing
 
         [TestMethod()]
