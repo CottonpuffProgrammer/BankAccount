@@ -11,13 +11,16 @@ namespace BankAccount.Tests
     [TestClass()]
     public class AccountTests
     {
-        private Account acc;
+        private Account? acc;
 
         [TestInitialize()]
         public void CreateDefaultAccount()
         {
             acc = new Account("Steve");
         }
+
+        // All 7 method tests are listed below, each with
+        // 2 data rows for extra testing
 
         [TestMethod()]
         [DataRow(23.48)]
@@ -105,11 +108,39 @@ namespace BankAccount.Tests
                 (() => acc.Withdraw(amount));
         }
 
-        // Withdrawing a positive amount - decrease balance
-        // Withdrawing 0 - throw AOOR exception
-        // Withdrawing negative amount - throw AOOR exception
-        // Withdrawing more than balance - throw AOOR exception
+        [TestMethod()]
+        public void Owner_SetAsNull_ThrowsArgumentNullException()
+        {
+            Assert.ThrowsException<ArgumentNullException>
+                (() => acc.Owner = null);
+        }
 
-        // Unit Tests should test the behavior we're looking for
+        [TestMethod()]
+        public void Owner_SetAsWhiteSpaceOrEmptyString_ThrowsArgumentException()
+        {
+            Assert.ThrowsException<ArgumentException>
+                (() => acc.Owner = String.Empty);
+            Assert.ThrowsException<ArgumentException>
+                (() => acc.Owner = "    ");
+        }
+
+        [TestMethod()]
+        [DataRow("Bean Dip")]
+        [DataRow("TwentyCharacter Name")]
+        public void Owner_SetAsUpTo20Characters_SetsSuccessfully(string ownerName)
+        {
+            acc.Owner = ownerName;
+
+            Assert.AreEqual(ownerName, acc.Owner);
+        }
+
+        [TestMethod()]
+        [DataRow("Diddle the 14th")]
+        [DataRow("TwentyFourCharacter Name")]
+        public void Owner_InvalidOwnerName_ThrowsArgumentException(string ownerName)
+        {
+            Assert.ThrowsException<ArgumentException>
+                (() => acc.Owner = ownerName);
+        }
     }
 }
