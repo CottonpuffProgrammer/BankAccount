@@ -40,18 +40,25 @@ namespace BankAccount
         /// <returns> The new balance after the deposit </returns>
         public double Deposit(double amount)
         {
+            if (amount <= 0)
+            {
+                throw new ArgumentOutOfRangeException("Deposit amount must be a non-zero positive number!");
+            }
+
             Balance = Balance + amount;
             return Balance;
         }
 
         /// <summary>
-        /// Withdraws an amount from the balance
+        /// Withdraws an amount from the balance and
+        /// returns the updated balance
         /// </summary>
         /// <param name="amount"> The positive amount to be 
         /// taken from the balance </param>
-        public void Withdraw(double amount)
+        public double Withdraw(double amount)
         {
-            throw new NotImplementedException();
+            Balance = Balance - amount;
+            return Balance;
         }
     }
 }
